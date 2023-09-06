@@ -6,13 +6,16 @@ public class PlayerMovement : MonoBehaviour
 {
     public float initialMoveSpeed = 5f;
 
-    private float moveSpeed = 5f;
+    private float moveSpeed;
     
     public Rigidbody2D playerBody;
     
     Vector2 movement;
+    private void Start()
+    {
+        moveSpeed = initialMoveSpeed;
+    }
 
-    // Update is called once per frame
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal");

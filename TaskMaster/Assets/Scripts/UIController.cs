@@ -8,53 +8,47 @@ public class UIController : MonoBehaviour
 {
     public GameObject blackOutSquare;
 
-    public Rigidbody2D playerBody; 
-
+    public GameObject player;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartCoroutine(FadeBlackOutSquare());
-        }
-        if (Input.GetKeyUp(KeyCode.P))
-        {
-            StartCoroutine(FadeBlackOutSquare(false));
-        }
+
     }
 
-    public IEnumerator FadeBlackOutSquare(bool fadeToBlack = true, int fadeSpeed = 5)
+    public IEnumerator FadeBlackOutSquare(int fadeSpeed = 5)
     {
         Color objectColor = blackOutSquare.GetComponent<Image>().color;
         float fadeAmount;
 
-        if (fadeToBlack)
+        while (blackOutSquare.GetComponent<Image>().color.a < 1)
         {
-            while (blackOutSquare.GetComponent<Image>().color.a < 1)
-            {
-                fadeAmount = objectColor.a + (fadeSpeed * Time.deltaTime);
+            fadeAmount = objectColor.a + (fadeSpeed * Time.deltaTime);
 
-                objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
-                blackOutSquare.GetComponent<Image>().color = objectColor;
-                yield return null;
-            }
+            objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
+            blackOutSquare.GetComponent<Image>().color = objectColor;
+            yield return null;
         }
-        else
+
+        player.transform.position = new Vector3 (-13.5f, player.transform.position.y, 0f);
+        yield return new WaitForSeconds(1);
+
+        while (blackOutSquare.GetComponent<Image>().color.a > 0)
         {
-            while (blackOutSquare.GetComponent<Image>().color.a > 0)
-            {
-                fadeAmount = objectColor.a - (fadeSpeed * Time.deltaTime);
+            fadeAmount = objectColor.a - (fadeSpeed * Time.deltaTime);
 
-                objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
-                blackOutSquare.GetComponent<Image>().color = objectColor;
-                yield return null;
-            }
+            objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
+            blackOutSquare.GetComponent<Image>().color = objectColor;
+            yield return null;
         }
+
+        yield return new WaitForSeconds(0.25f);
+        player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger");
+        player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(FadeBlackOutSquare());
+        
     }
 }

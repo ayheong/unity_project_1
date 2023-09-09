@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveSpeed = initialMoveSpeed;
-        }
+        }   
     }
 
     private void FixedUpdate()

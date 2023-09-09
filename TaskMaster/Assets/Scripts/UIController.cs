@@ -42,7 +42,7 @@ public class UIController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.25f);
-        player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
